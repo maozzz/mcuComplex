@@ -45,21 +45,18 @@ void initAdc() {
 
 void mq135Task(void *arg) {
     initAdc();
-    float U;
+    float ppm;
     uint32_t raw_adc;
-//    uint32_t KALIBR = 1241;
+    char str[9];
     while (1) {
         ADC1_Start();
         while (ADC1_GetFlagStatus(ADC1_FLAG_END_OF_CONVERSION) == 0) {
             portYIELD()
         }
         raw_adc = ADC1_GetResult() & 0x00000FFF;
-//        U = (float) RESULT / KALIBR;
-        float ppm = ((10000.0 / 4096.0) * raw_adc) - 200;
-        char str[9];
+        ppm = ((10000.0 / 4096.0) * raw_adc) - 200;
         sprintf(str, "CO2: %2.2f ppm\n", ppm);
         Uart::uart->send(str);
         vTaskDelay(500);
-        asm("nop");
     }
 }
