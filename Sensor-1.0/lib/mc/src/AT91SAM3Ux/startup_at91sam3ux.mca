@@ -1,0 +1,251 @@
+;/*****************************************************************************
+; * @file:    startup_sam3u.mca
+; * @author   Phyton Application Team
+; * @version: V1.1
+; * @date:    25/03/2011
+; * @brief:   Atmel Cortex Device CMSIS Startup File for the devices:
+; *           ATSAM3U1C, ATSAM3U1E, ATSAM3U2C, ATSAM3U2E, ATSAM3U4C,
+; *           ATSAM3U4E
+; *****************************************************************************
+; * <br><br>
+; *
+; * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+; * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+; * TIME. AS A RESULT, PHYTON SHALL NOT BE HELD LIABLE FOR ANY DIRECT, INDIRECT
+; * OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+; * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+; * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+; *
+; * <h2><center>&copy; COPYRIGHT 2010 Phyton</center></h2>
+; *****************************************************************************
+; * FILE startup_sam3u.mca
+; */
+
+.PMODULE  ?startup_device
+
+    .IF .NOT .DEFINED __VECTORS_ADDR
+      __VECTORS_ADDR  .EQU  00100000H
+    .ENDIF
+
+    .PUBLIC  __Vectors
+    .PUBLIC  __Vectors_End
+
+    .EXTRN(code) ?start
+
+    .RSEG CSTACK,data
+    .ALIGN  3
+
+    .ASEG INTVEC,code
+    .ALIGN  6
+    .ORG  __VECTORS_ADDR             ; if vector table is located in RAM,
+                                     ; change this value
+
+SET_HANDLER .MACRO Name
+    .EXTRNF16 Name          .VOID(.VOID)
+    .DCD      Name
+.ENDMAC
+
+__Vectors .LABELD
+    .DCD            (.SFE CSTACK) + 1       ; Top of Stack
+    SET_HANDLER     Reset_Handler           ; Reset Handler
+    SET_HANDLER     NMI_Handler             ; NMI Handler
+    SET_HANDLER     HardFault_Handler       ; Hard Fault Handler
+    SET_HANDLER     MemManage_Handler       ; MPU Fault Handler
+    SET_HANDLER     BusFault_Handler        ; Bus Fault Handler
+    SET_HANDLER     UsageFault_Handler      ; Usage Fault Handler
+    .DCD     0                              ; Reserved
+    .DCD     0                              ; Reserved
+    .DCD     0                              ; Reserved
+    .DCD     0                              ; Reserved
+    SET_HANDLER     SVC_Handler             ; SVCall Handler
+    SET_HANDLER     DebugMon_Handler        ; Debug Monitor Handler
+    .DCD     0                              ; Reserved
+    SET_HANDLER     PendSV_Handler          ; PendSV Handler
+    SET_HANDLER     SysTick_Handler         ; SysTick Handler
+;
+;    SET_HANDLER     IRQ0_IRQHandler         ; Eexternal Interrupt(0) Handler
+;    ....
+;    SET_HANDLER     IRQn_IRQHandler         ; Eexternal Interrupt(n) Handler
+
+__Vectors_End .LABELD
+
+.ENDMOD
+
+
+;=====================================================================;
+;                                                                     ;
+;                     Default Reset handler                           ;
+;                                                                     ;
+;=====================================================================;
+.LMODULE2 ?Reset_Handler
+.PUBLIC Reset_Handler
+.EXTRN(code) ?start
+.EXTRNF16 SystemInit .VOID(.VOID)
+
+.RSEG CSTACK,data
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+Reset_Handler?T:
+Reset_Handler   .EQU    Reset_Handler?T+1
+.FUNCTYPE .VOID Reset_Handler(.VOID)
+    LDR     R0, =(.SFE CSTACK) + 1
+    MSR     MSP, R0
+    LDR     R0, =SystemInit
+    BLX     R0
+    LDR     R0, =?start
+    BX      R0
+.ENDMOD
+
+
+;=====================================================================;
+;                                                                     ;
+;                     Default interrupt handlers                      ;
+;                                                                     ;
+;=====================================================================;
+.LMODULE2 ?NMI_Handler
+.PUBLIC NMI_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+NMI_Handler?T:
+NMI_Handler .EQU  NMI_Handler?T+1
+.FUNCTYPE .VOID NMI_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?HardFault_Handler
+.PUBLIC HardFault_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+HardFault_Handler?T:
+HardFault_Handler .EQU  HardFault_Handler?T+1
+.FUNCTYPE .VOID HardFault_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?MemManage_Handler
+.PUBLIC MemManage_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+MemManage_Handler?T:
+MemManage_Handler .EQU  MemManage_Handler?T+1
+.FUNCTYPE .VOID MemManage_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?BusFault_Handler
+.PUBLIC BusFault_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+BusFault_Handler?T:
+BusFault_Handler .EQU  BusFault_Handler?T+1
+.FUNCTYPE .VOID BusFault_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UsageFault_Handler
+.PUBLIC UsageFault_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UsageFault_Handler?T:
+UsageFault_Handler .EQU  UsageFault_Handler?T+1
+.FUNCTYPE .VOID UsageFault_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?SVC_Handler
+.PUBLIC SVC_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+SVC_Handler?T:
+SVC_Handler .EQU  SVC_Handler?T+1
+.FUNCTYPE .VOID SVC_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DebugMon_Handler
+.PUBLIC DebugMon_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DebugMon_Handler?T:
+DebugMon_Handler .EQU  DebugMon_Handler?T+1
+.FUNCTYPE .VOID DebugMon_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PendSV_Handler
+.PUBLIC PendSV_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PendSV_Handler?T:
+PendSV_Handler .EQU  PendSV_Handler?T+1
+.FUNCTYPE .VOID PendSV_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?SysTick_Handler
+.PUBLIC SysTick_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+SysTick_Handler?T:
+SysTick_Handler .EQU  SysTick_Handler?T+1
+.FUNCTYPE .VOID SysTick_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+;=====================================================================;
+;                                                                     ;
+;       User-defined Interrupt handlers                               ;
+;                                                                     ;
+;=====================================================================;
+;.LMODULE2 ?IRQ0_IRQHandler
+;.PUBLIC IRQ0_IRQHandler
+;.RSEG ??DEFAULT_HANDLERS,code
+;    .THUMB
+;IRQ0_IRQHandler?T:
+;IRQ0_IRQHandler .EQU  IRQ0_IRQHandler?T+1
+;.FUNCTYPE .VOID IRQ0_IRQHandler(.VOID)
+;    B       $
+;.ENDMOD
+
+
+;.LMODULE2 ?IRQn_IRQHandler
+;.PUBLIC IRQn_IRQHandler
+;.RSEG ??DEFAULT_HANDLERS,code
+;    .THUMB
+;IRQn_IRQHandler?T:
+;IRQn_IRQHandler .EQU  IRQn_IRQHandler?T+1
+;.FUNCTYPE .VOID IRQn_IRQHandler(.VOID)
+;    B       $
+;.ENDMOD
+
+
+;=====================================================================;
+;                                                                     ;
+;       User-defined low-level initialization that is made            ;
+;                     before cstartup                                 ;
+;                                                                     ;
+;=====================================================================;
+.LMODULE2 ??SystemInit
+.PUBLIC SystemInit
+.RSEG   ??CODE_CLIB,code
+.THUMB
+SystemInit?T:
+SystemInit .EQU SystemInit?T+1
+.FUNCTYPE .VOID SystemInit(.VOID)
+    BX      LR
+
+.END
+
+;/******************* (C) COPYRIGHT 2010 Phyton *******************************
+;*
+;* END OF FILE startup_atsam3u.mca */
+

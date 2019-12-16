@@ -15,7 +15,7 @@ extern "C" void Uart::task(void *arg) {
         Uart::uart->send(Uart::uart->uid % 10 + '0');
         Uart::uart->uid++;
         Uart::uart->send(": Maoz's MCU over UART!\n");
-        vTaskDelay(10000);// Задержка
+        vTaskDelay(60000);// Задержка
     }
 }
 

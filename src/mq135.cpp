@@ -57,6 +57,6 @@ void mq135Task(void *arg) {
         ppm = ((10000.0 / 4096.0) * raw_adc) - 200;
         sprintf(str, "CO2: %2.2f ppm\n", ppm);
         Uart::uart->send(str);
-        vTaskDelay(500);
+        vTaskDelay(5000);
     }
 }

@@ -6,10 +6,10 @@ void initClk();
 int main() {
     initClk();
 
-//    xTaskCreate(task, "1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL);
     xTaskCreate(Uart::task, "uart", 32, NULL, tskIDLE_PRIORITY + 1, NULL);
     xTaskCreate(mq135Task, "mq135", 200, NULL, tskIDLE_PRIORITY + 1, NULL);
-    xTaskCreate(glcdTask, "glcd", 300, NULL, tskIDLE_PRIORITY + 1, NULL);
+//    xTaskCreate(i2cTask, "i2c", 200, NULL, tskIDLE_PRIORITY + 1, NULL);
+//    xTaskCreate(glcdTask, "glcd", 300, NULL, tskIDLE_PRIORITY + 1, NULL);
 
     // Запускаем диспетчер и понеслась.
     vTaskStartScheduler();

@@ -61,7 +61,7 @@ file(GLOB_RECURSE SOURCES
         #        emdr1986x-std-per-lib/MDR32F9Qx_StdPeriph_Driver/src/MDR32F9Qx_dsp.c
         #        emdr1986x-std-per-lib/MDR32F9Qx_StdPeriph_Driver/src/MDR32F9Qx_ebc.c
         #        emdr1986x-std-per-lib/MDR32F9Qx_StdPeriph_Driver/src/MDR32F9Qx_eeprom.c
-        #        emdr1986x-std-per-lib/MDR32F9Qx_StdPeriph_Driver/src/MDR32F9Qx_i2c.c
+                emdr1986x-std-per-lib/MDR32F9Qx_StdPeriph_Driver/src/MDR32F9Qx_i2c.c
         #        emdr1986x-std-per-lib/MDR32F9Qx_StdPeriph_Driver/src/MDR32F9Qx_iwdg.c
         #        emdr1986x-std-per-lib/MDR32F9Qx_StdPeriph_Driver/src/MDR32F9Qx_keypad.c
         #        emdr1986x-std-per-lib/MDR32F9Qx_StdPeriph_Driver/src/MDR32F9Qx_led.c
