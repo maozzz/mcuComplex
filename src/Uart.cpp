@@ -10,11 +10,6 @@ extern "C" void Uart::task(void *arg) {
     Uart::uart->init(MDR_PORTF, PORT_Pin_1, MDR_PORTF, PORT_Pin_0, MDR_UART2);
     // Бесконечный цикл
     while (1) {
-        Uart::uart->send(Uart::uart->uid / 100 + '0');
-        Uart::uart->send((Uart::uart->uid % 100) / 10 + '0');
-        Uart::uart->send(Uart::uart->uid % 10 + '0');
-        Uart::uart->uid++;
-        Uart::uart->send(": Maoz's MCU over UART!\n");
         vTaskDelay(60000);// Задержка
     }
 }

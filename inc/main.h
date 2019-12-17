@@ -8,7 +8,7 @@
 //#include "LcdKs0108.h"
 #include "mq135.h"
 #include "Uart.h"
-#include "I2C.h"
+#include "DHT11.h"
 //
 // Created by Alexey Matukhin on 13/12/2019.
 //

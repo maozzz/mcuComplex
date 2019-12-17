@@ -14,6 +14,7 @@
 #include "MDR32F9Qx_rst_clk.h"
 #include <portmacro.h>
 #include "Uart.h"
+#include "DHT11.h"
 
 void mq135Task(void *arg);
 

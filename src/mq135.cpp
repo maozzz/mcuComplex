@@ -32,7 +32,7 @@ void ADC1Init() {
     ADC1_Cmd(ENABLE);
 }
 
-void initAdc() {
+void init() {
     PORT_InitTypeDef PortInitStructure;
     PORT_StructInit(&PortInitStructure);
     PortInitStructure.PORT_Pin = PORT_Pin_6;
@@ -41,13 +41,15 @@ void initAdc() {
 
     ADCInit();
     ADC1Init();
+
+    DHT11::dht11->init();
 }
 
 void mq135Task(void *arg) {
-    initAdc();
+    init();
     float ppm;
     uint32_t raw_adc;
-    char str[9];
+    char str[40];
     while (1) {
         ADC1_Start();
         while (ADC1_GetFlagStatus(ADC1_FLAG_END_OF_CONVERSION) == 0) {
@@ -55,8 +57,17 @@ void mq135Task(void *arg) {
         }
         raw_adc = ADC1_GetResult() & 0x00000FFF;
         ppm = ((10000.0 / 4096.0) * raw_adc) - 200;
-        sprintf(str, "CO2: %2.2f ppm\n", ppm);
+
+        DHT11::dht11->request();
+        Uart::uart->send("=========================\n");
+        sprintf(str, "CO2: %2.2f ppm\nH2O: %d %%\nTmp: %d.%d *C\n",
+                ppm,
+                DHT11::dht11->result[0],
+                DHT11::dht11->result[2],
+                DHT11::dht11->result[3],
+                DHT11::dht11->result[4]);
         Uart::uart->send(str);
-        vTaskDelay(5000);
+        Uart::uart->send("=========================\n");
+        vTaskDelay(10000);
     }
 }
